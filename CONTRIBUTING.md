@@ -11,7 +11,8 @@ Ideas and contributions are always welcome! Please create an issue or PR on [Git
 - [Sphinx](http://www.sphinx-doc.org) for documentation
 
 ## Adding messages
-The README.md shows a Markdown table with all messages in this plugin. To generate the table, run `python scripts/generate_codes_table.py` and copy-paste in the README.md.
+- The README.md shows a Markdown table with all messages in this plugin. To generate the table, run `python scripts/generate_codes_table.py` and copy-paste in the README.md.
+- Add tests.
 
 ## Conventions
 - Line length is set to 100 characters in .pylintrc and Makefile black target.

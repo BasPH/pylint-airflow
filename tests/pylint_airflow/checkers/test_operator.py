@@ -1,3 +1,5 @@
+"""Tests for the Operator checker."""
+
 import astroid
 import pytest
 from pylint.testutils import CheckerTestCase, Message
@@ -6,9 +8,12 @@ import pylint_airflow
 
 
 class TestOperatorChecker(CheckerTestCase):
+    """Tests for the Operator checker."""
+
     CHECKER_CLASS = pylint_airflow.checkers.operator.OperatorChecker
 
     def test_different_operator_varname_taskid(self):
+        """task_id and operator instance name should match, but differ so should add message."""
         testcase = """
         from airflow.operators.dummy_operator import DummyOperator
         mytask = DummyOperator(task_id="foo") #@
@@ -20,6 +25,10 @@ class TestOperatorChecker(CheckerTestCase):
             self.checker.visit_assign(assign_node)
 
     def test_different_operator_varname_taskid_baseoperator(self):
+        """
+        task_id and operator instance name should match, but differ, so should add message, also
+        when using BaseOperator.
+        """
         testcase = """
         from airflow.models import BaseOperator
         mytask = BaseOperator(task_id="foo") #@
@@ -31,6 +40,7 @@ class TestOperatorChecker(CheckerTestCase):
             self.checker.visit_assign(assign_node)
 
     def test_different_operator_varname_taskid_valid(self):
+        """task_id and operator instance name are identical so no message should be added."""
         testcase = """
         from airflow.operators.dummy_operator import DummyOperator
         mytask = DummyOperator(task_id="mytask") #@
@@ -41,6 +51,7 @@ class TestOperatorChecker(CheckerTestCase):
             self.checker.visit_assign(assign_node)
 
     def test_match_callable_taskid(self):
+        """python_callable function name does not match _[task_id] (= invalid), expect message."""
         testcase = """
         from airflow.operators.python_operator import PythonOperator
         
@@ -56,6 +67,7 @@ class TestOperatorChecker(CheckerTestCase):
             self.checker.visit_assign(assign_node)
 
     def test_not_match_callable_taskid(self):
+        """python_callable function name matches _[task_id], expect no message."""
         testcase = """
         from airflow.operators.python_operator import PythonOperator
 
@@ -84,6 +96,10 @@ class TestOperatorChecker(CheckerTestCase):
         ],
     )
     def test_mixed_dependency_directions(self, dependencies, expect_msg):
+        """
+        Test various ways (both directions & single task/lists) to set dependencies using bitshift
+        operators. Should add message when mixing directions.
+        """
         testcase = f"""
         from airflow.operators.dummy_operator import DummyOperator
         t1 = DummyOperator(task_id="t1")

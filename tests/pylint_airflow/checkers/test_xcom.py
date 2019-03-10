@@ -1,3 +1,5 @@
+"""Tests for the XCom checker."""
+
 import astroid
 from pylint.testutils import CheckerTestCase, Message
 
@@ -5,9 +7,12 @@ import pylint_airflow
 
 
 class TestXComChecker(CheckerTestCase):
+    """Tests for the XCom checker."""
+
     CHECKER_CLASS = pylint_airflow.checkers.xcom.XComChecker
 
     def test_used_xcom(self):
+        """Test valid case: _pushtask() returns a value and _pulltask pulls and uses it."""
         testcase = """
         from airflow.operators.python_operator import PythonOperator
         
@@ -27,6 +32,7 @@ class TestXComChecker(CheckerTestCase):
             self.checker.visit_module(ast)
 
     def test_unused_xcom(self):
+        """Test invalid case: _pushtask() returns a value but it's never used."""
         testcase = """
         from airflow.operators.python_operator import PythonOperator
 

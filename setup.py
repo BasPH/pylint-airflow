@@ -12,3 +12,5 @@ setup(
     install_requires=["pylint"],
     keywords=["pylint", "airflow", "plugin"],
 )
+
+# TODO add dependency pytest 4.3.0

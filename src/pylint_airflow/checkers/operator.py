@@ -88,6 +88,8 @@ class OperatorChecker(checkers.BaseChecker):
 
     @utils.check_messages("mixed-dependency-directions")
     def visit_binop(self, node):
+        """Check for mixed dependency directions."""
+
         def fetch_binops(node_):
             """
             Method fetching binary operations (>> and/or <<).

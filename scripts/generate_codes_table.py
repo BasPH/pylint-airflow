@@ -55,7 +55,11 @@ for msgid_char, char_msgs in sorted(
     messages.items(), key=lambda i: pylint_message_order.index(i[0])
 ):
     for msgid_nums, msg in sorted(char_msgs.items()):
-        result += f"| {msgid_char}{msgid_nums} | {msg[0].ljust(max_symbol_length)} | {msg[1].ljust(max_description_length)} |\n"
+        result += (
+            f"| {msgid_char}{msgid_nums} | "
+            f"{msg[0].ljust(max_symbol_length)} | "
+            f"{msg[1].ljust(max_description_length)} |\n"
+        )
 
 print(
     "{color_red}Copy the following into README.md:{no_color}\n".format(

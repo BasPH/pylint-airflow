@@ -1,4 +1,5 @@
 """Checks on Airflow XComs."""
+
 import astroid
 from pylint import checkers
 from pylint import interfaces
@@ -30,15 +31,14 @@ class XComChecker(checkers.BaseChecker):
 
         Currently this only checks unused XComs from return value of a python_callable.
         """
+        # pylint: disable=too-many-locals,too-many-branches
         assign_nodes = [n for n in node.body if isinstance(n, astroid.Assign)]
-        call_nodes = {
-            n.targets[0].name: n.value for n in assign_nodes if isinstance(n.value, astroid.Call)
-        }
+        call_nodes = [n.value for n in assign_nodes if isinstance(n.value, astroid.Call)]
 
         # Store nodes containing python_callable arg as:
         # {task_id: (call node, python_callable func name)}
         python_callable_nodes = dict()
-        for call_varname, call_node in call_nodes.items():
+        for call_node in call_nodes:
             if call_node.keywords:
                 task_id = ""
                 python_callable = ""
@@ -80,3 +80,5 @@ class XComChecker(checkers.BaseChecker):
             for remainder_task_id in remainder:
                 python_callable, callable_func_name = xcoms_pushed[remainder_task_id]
                 self.add_message("unused-xcom", node=python_callable, args=callable_func_name)
+
+        # pylint: enable=too-many-locals,too-many-branches
