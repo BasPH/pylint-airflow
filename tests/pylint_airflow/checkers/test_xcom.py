@@ -36,10 +36,10 @@ class TestXComChecker(CheckerTestCase):
 
         pushtask = PythonOperator(task_id="pushtask", python_callable=_pushtask)
 
-        def _pulltask(task_instance, **_):
+        def _pulltask():
             print("foobar")
 
-        pulltask = PythonOperator(task_id="pulltask", python_callable=_pulltask, provide_context=True)
+        pulltask = PythonOperator(task_id="pulltask", python_callable=_pulltask)
         """
         ast = astroid.parse(testcase)
         expected_msg_node = ast.body[2].value
