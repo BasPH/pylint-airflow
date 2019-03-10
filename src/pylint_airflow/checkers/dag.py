@@ -39,6 +39,11 @@ class DagChecker(checkers.BaseChecker):
             "dag-with-cycles",
             "A DAG is acyclic and cannot contain cycles.",
         ),
+        f"E{BASE_ID}04": (
+            "Task {} is not bound to any DAG instance",
+            "task-no-dag",
+            "A task must know a DAG instance to run.",
+        ),
     }
 
     def leave_module(self, node):

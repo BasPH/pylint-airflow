@@ -38,6 +38,18 @@ class OperatorChecker(checkers.BaseChecker):
             "Sometimes a task without any dependency is desired, however often it is "
             "the result of a forgotten dependency.",
         ),
+        f"C{BASE_ID}04": (
+            "Rename **kwargs variable to **context to show intent for Airflow task context"
+            "task-context-argname",
+            "Indicate you expect Airflow task context variables in the **kwargs "
+            "argument by renaming to **context.",
+        ),
+        f"C{BASE_ID}05": (
+            "Extract variables from keyword arguments for explicitness",
+            "task-context-separate-arg",
+            "To avoid unpacking kwargs from the Airflow task context in a function, you "
+            "can set the needed variables as arguments in the function.",
+        ),
     }
 
     @utils.check_messages("different-operator-varname-taskid", "match-callable-taskid")
