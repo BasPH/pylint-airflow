@@ -1,4 +1,4 @@
-<img style="float: right;" src="images/pylint-airflow.png">
+<img src="images/pylint-airflow.png" align="right" />
 
 # pylint-airflow
 
