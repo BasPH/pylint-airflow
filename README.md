@@ -49,6 +49,10 @@ The current codes are:
 | E8302 | duplicate-dependency              | Task dependencies can be defined only once.                                                                                                                     |
 | E8303 | dag-with-cycles                   | A DAG is acyclic and cannot contain cycles.                                                                                                                     |
 
+### Note
+Not all messages are activated by default. For example:
+... TODO explain task-context-argname vs task-context-argname-under ...
+
 ## Documentation
 
 Documentation is available on Read the Docs. TODO: make docs, upload, and make link here.
@@ -60,3 +64,6 @@ Suggestions for more checks are always welcome, please create an issue on GitHub
 # TODO:
 - check if top level code
 - check if params supplied via operator args exist
+- if python_callable with **kwargs and provide_context -> rename to **context
+- in the python_callable function, extract variables from the context in the arguments
+- ensure dag_id is same as filename
