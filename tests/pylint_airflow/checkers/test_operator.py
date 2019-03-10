@@ -73,7 +73,9 @@ class TestOperatorChecker(CheckerTestCase):
         "dependencies,expect_msg",
         [
             ("t1 >> t2", False),
+            ("t1 >> t2 << t3", True),
             ("t1 >> t2 >> t3 >> t4 >> t5", False),
+            ("t1 >> t2 << t3 >> t4 << t5", True),
             ("t1 >> [t2, t3]", False),
             ("[t1, t2] >> t3", False),
             ("[t1, t2] >> t3 << t4", True),
