@@ -1,6 +1,6 @@
 .PHONY: black
 black:
-	find . -name '*.py' | xargs black --check --line-length=90
+	find . -name '*.py' | xargs black --check --line-length=100
 
 .PHONY: pylint
 pylint:
