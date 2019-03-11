@@ -10,5 +10,9 @@ pylint:
 validate_message_ids:
 	python scripts/ci_validate_msg_ids.py
 
+.PHONY: pytest
+pytest:
+	pytest tests/
+
 .PHONY: ci
-ci: | black pylint validate_message_ids
+ci: | black pylint validate_message_ids pytest
