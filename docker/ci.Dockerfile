@@ -11,10 +11,10 @@ COPY .pylintrc .pylintrc
 COPY Makefile Makefile
 COPY setup.py setup.py
 
-RUN apt update && \
-	apt install -y gcc g++ --no-install-recommends && \
-    # As long as Airflow requires this GPL dependency we have to install with SLUGIFY_USES_TEXT_UNIDECODE=yes
-    # https://github.com/apache/airflow/pull/4513
+# As long as Airflow requires this GPL dependency we have to install with SLUGIFY_USES_TEXT_UNIDECODE=yes
+# https://github.com/apache/airflow/pull/4513
+RUN apt-get update && \
+	apt-get install -y gcc g++ --no-install-recommends && \
     SLUGIFY_USES_TEXT_UNIDECODE=yes pip install .[ci] && \
 	apt-get remove -y --purge gcc g++ && \
     apt-get autoremove -y && \
