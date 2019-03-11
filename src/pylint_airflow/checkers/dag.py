@@ -1,4 +1,5 @@
 """Checks on Airflow DAGs."""
+
 from collections import defaultdict
 
 import astroid
@@ -48,10 +49,16 @@ class DagChecker(checkers.BaseChecker):
             "task-no-dag",
             "A task must know a DAG instance to run.",
         ),
+        f"C{BASE_ID}06": (
+            "For consistency match the DAG filename with the dag_id",
+            "match-dagid-filename",
+            "For consistency match the DAG filename with the dag_id.",
+        ),
     }
 
-    @utils.check_messages("duplicate-dag-name")
+    @utils.check_messages("duplicate-dag-name", "match-dagid-filename")
     def visit_module(self, node: astroid.Module):
+        """Checks in the context of (a) complete DAG(s)."""
         assigns = node.nodes_of_class(astroid.Assign)
         dagids_nodes = defaultdict(list)
         for assign in assigns:
@@ -62,6 +69,14 @@ class DagChecker(checkers.BaseChecker):
                         # Currently only constants supported
                         if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
                             dagids_nodes[keyword.value.value].append(assign)
+
+        # Check if single DAG and if equals filename
+        if len(dagids_nodes) == 1:
+            dagid, _ = list(dagids_nodes.items())[0]
+            expected_filename = f"{dagid}.py"
+            current_filename = node.file.split("/")[-1]
+            if expected_filename != current_filename:
+                self.add_message("match-dagid-filename", node=node)
 
         duplicate_dagids = [
             (dagid, nodes) for dagid, nodes in dagids_nodes.items() if len(nodes) >= 2
