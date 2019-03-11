@@ -39,7 +39,7 @@ class OperatorChecker(checkers.BaseChecker):
             "the result of a forgotten dependency.",
         ),
         f"C{BASE_ID}04": (
-            "Rename **kwargs variable to **context to show intent for Airflow task context"
+            "Rename **kwargs variable to **context to show intent for Airflow task context",
             "task-context-argname",
             "Indicate you expect Airflow task context variables in the **kwargs "
             "argument by renaming to **context.",
