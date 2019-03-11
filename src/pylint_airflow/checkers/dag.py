@@ -71,12 +71,14 @@ class DagChecker(checkers.BaseChecker):
                             dagids_nodes[keyword.value.value].append(assign)
 
         # Check if single DAG and if equals filename
-        if len(dagids_nodes) == 1:
-            dagid, _ = list(dagids_nodes.items())[0]
-            expected_filename = f"{dagid}.py"
-            current_filename = node.file.split("/")[-1]
-            if expected_filename != current_filename:
-                self.add_message("match-dagid-filename", node=node)
+        # Unit test nodes have file "<?>"
+        if node.file != "<?>":
+            if len(dagids_nodes) == 1:
+                dagid, _ = list(dagids_nodes.items())[0]
+                expected_filename = f"{dagid}.py"
+                current_filename = node.file.split("/")[-1]
+                if expected_filename != current_filename:
+                    self.add_message("match-dagid-filename", node=node)
 
         duplicate_dagids = [
             (dagid, nodes) for dagid, nodes in dagids_nodes.items() if len(nodes) >= 2
