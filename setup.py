@@ -2,6 +2,8 @@
 
 from setuptools import setup, find_packages
 
+ci = ["pytest~=4.3", "black>=18.9b0", "apache-airflow~=1.10.2"]
+
 setup(
     name="pylint-airflow",
     url="https://github.com/BasPH/pylint-airflow",
@@ -11,6 +13,5 @@ setup(
     package_dir={"": "src"},
     install_requires=["pylint"],
     keywords=["pylint", "airflow", "plugin"],
+    extras_require={"ci": ci},
 )
-
-# TODO add dependency pytest 4.3.0

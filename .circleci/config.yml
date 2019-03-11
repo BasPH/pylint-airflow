@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build CI image
+          command: |
+            docker build -f docker/ci.Dockerfile .
