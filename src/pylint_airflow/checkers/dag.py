@@ -1,7 +1,11 @@
 """Checks on Airflow DAGs."""
+from collections import defaultdict
 
+import astroid
 from pylint import checkers
 from pylint import interfaces
+from pylint.checkers import utils
+from pylint.checkers.utils import safe_infer
 
 from pylint_airflow.__pkginfo__ import BASE_ID
 
@@ -20,7 +24,7 @@ class DagChecker(checkers.BaseChecker):
             "functions/hooks/operators.",
         ),
         f"E{BASE_ID}00": (
-            "DAG name {} already used",
+            "DAG name %s already used",
             "duplicate-dag-name",
             "DAG name should be unique.",
         ),
@@ -46,5 +50,21 @@ class DagChecker(checkers.BaseChecker):
         ),
     }
 
-    def leave_module(self, node):
-        pass
+    @utils.check_messages("duplicate-dag-name")
+    def visit_module(self, node: astroid.Module):
+        assigns = node.nodes_of_class(astroid.Assign)
+        dagids_nodes = defaultdict(list)
+        for assign in assigns:
+            if isinstance(assign.value, astroid.Call):
+                function_node = safe_infer(assign.value.func)
+                if function_node.is_subtype_of("airflow.models.DAG"):
+                    for keyword in assign.value.keywords:
+                        # Currently only constants supported
+                        if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
+                            dagids_nodes[keyword.value.value].append(assign)
+
+        duplicate_dagids = [
+            (dagid, nodes) for dagid, nodes in dagids_nodes.items() if len(nodes) >= 2
+        ]
+        for (dagid, assign_nodes) in duplicate_dagids:
+            self.add_message("duplicate-dag-name", node=assign_nodes[-1], args=dagid)
