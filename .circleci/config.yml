@@ -2,11 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: docker:18.09
+      - image: basph/pylint-airflow-ci:latest
     steps:
       - checkout
-      - setup_remote_docker
       - run:
-          name: Build CI image
+          name: Check Black formatting
           command: |
-            docker build -f docker/ci.Dockerfile .
+            find . -name '*.py' | xargs black --check --line-length=100
+      - run:
+          name: Check Pylint
+          command: |
+            find . -name '*.py' | xargs pylint --output-format=colorized
