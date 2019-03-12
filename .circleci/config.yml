@@ -20,9 +20,7 @@ jobs:
       - run:
           name: Validate Pylint-Airflow message IDs
           command: |
-            ls -lah
-            pwd
-            python scripts/validate_message_ids.py
+            python scripts/ci_validate_msg_ids.py
       - run:
           name: Run tests
           command: |
