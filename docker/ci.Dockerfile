@@ -4,7 +4,7 @@
 FROM continuumio/miniconda3:4.5.12
 
 WORKDIR /pylint-airflow
-# Note: Items to not include in the Docker image are excluded in .dockerignore
+# Note: Items to exclude in the Docker image are listed in .dockerignore
 COPY . .
 
 # As long as Airflow requires this GPL dependency we have to install with SLUGIFY_USES_TEXT_UNIDECODE=yes
