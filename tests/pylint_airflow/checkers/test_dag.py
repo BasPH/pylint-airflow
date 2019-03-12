@@ -11,6 +11,7 @@ class TestDagChecker(CheckerTestCase):
     CHECKER_CLASS = pylint_airflow.checkers.dag.DagChecker
 
     def test_duplicate_dag(self):
+        """Test for multiple DAG instances with identical names."""
         testcase = """
         from airflow import models
         from airflow.models import DAG
@@ -30,6 +31,7 @@ class TestDagChecker(CheckerTestCase):
             self.checker.visit_module(ast)
 
     def test_no_duplicate_dag(self):
+        """Test for multiple DAG instances without identical names - this should be fine."""
         testcase = """
         from airflow.models import DAG
         dag = DAG(dag_id="lintme")

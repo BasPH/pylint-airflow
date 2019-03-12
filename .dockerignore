@@ -1,0 +1,11 @@
+.cache/
+.circleci/
+docker/
+docs/
+images/
+.git/
+.gitignore
+CONTRIBUTING.md
+LICENSE
+Makefile
+README.md

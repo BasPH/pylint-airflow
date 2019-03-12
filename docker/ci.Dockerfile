@@ -4,18 +4,14 @@
 FROM continuumio/miniconda3:4.5.12
 
 WORKDIR /pylint-airflow
-COPY scripts scripts/
-COPY src/pylint_airflow src/pylint_airflow/
-COPY tests tests/
-COPY .pylintrc .pylintrc
-COPY Makefile Makefile
-COPY setup.py setup.py
+# Note: Items to exclude in the Docker image are listed in .dockerignore
+COPY . .
 
 # As long as Airflow requires this GPL dependency we have to install with SLUGIFY_USES_TEXT_UNIDECODE=yes
 # https://github.com/apache/airflow/pull/4513
 RUN apt-get update && \
 	apt-get install -y gcc g++ --no-install-recommends && \
-    SLUGIFY_USES_TEXT_UNIDECODE=yes pip install .[ci] && \
+	SLUGIFY_USES_TEXT_UNIDECODE=yes pip install -r requirements.txt && \
 	apt-get remove -y --purge gcc g++ && \
     apt-get autoremove -y && \
     apt-get clean -y && \
