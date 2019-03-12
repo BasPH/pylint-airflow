@@ -6,6 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Pip install Pylint-Airflow package
+          command: |
+            - pip install .
+      - run:
           name: Check Black formatting
           command: |
             find . -name '*.py' | xargs black --check --line-length=100
@@ -13,3 +17,11 @@ jobs:
           name: Check Pylint
           command: |
             find . -name '*.py' | xargs pylint --output-format=colorized
+      - run:
+          name: Validate Pylint-Airflow message IDs
+          command: |
+            python scripts/validate_message_ids.py
+      - run:
+          name: Run tests
+          command: |
+            pytest tests/

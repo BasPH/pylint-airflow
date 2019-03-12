@@ -9,15 +9,27 @@ Ideas and contributions are always welcome! Please create an issue or PR on [Git
 - [Pytest](https://pytest.org) for testing
 - [Read the Docs](https://readthedocs.org) for hosting the documentation
 - [Sphinx](http://www.sphinx-doc.org) for documentation
+- [CircleCI](https://circleci.com) for CI/CD
+
+## Makefile
+
+The project contains a Makefile with a few commonly used targets. The Makefile and CircleCI should align so that you can run the full CI pipeline locally with just `make ci`. Other targets are:
+
+- `make black`: check Black formatting
+- `make pylint`: check Pylint
+- `make pytest`: run all tests
+- `make validate_message_ids`: check if message IDs are defined without gaps
 
 ## Adding messages
 - The README.md shows a Markdown table with all messages in this plugin. To generate the table, run `python scripts/generate_codes_table.py` and copy-paste in the README.md.
+- The CI checks if message IDs are defined 
 - Add tests.
+- Run CI pipeline locally with `make ci`.
 
 ## Conventions
 - Line length is set to 100 characters in .pylintrc and Makefile black target.
 - Documentation is written in reStructuredText (rst) format.
-- Versioning according to SemVer versioning.
+- Versioning according to SemVer versioning (Read the Docs parses git tags against [PEP 440](https://www.python.org/dev/peps/pep-0440) rules to version the documentation).
 - Checkers are organized by Airflow component.
 
 ## Getting started
