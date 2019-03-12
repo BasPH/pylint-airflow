@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Pip install Pylint-Airflow package
           command: |
-            - pip install .
+            pip install .
       - run:
           name: Check Black formatting
           command: |
