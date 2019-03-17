@@ -1,6 +1,6 @@
 """
 This script fetches all messages from the Pylint-Airflow plugin and writes into a
-Markdown table, to be copied into README.md.
+Markdown table, to be copied into README.rst.
 
 Made a custom script because I wanted messages ordered by
 1. pylint message type (I, C, R, W, E, F) and
@@ -62,7 +62,7 @@ for msgid_char, char_msgs in sorted(
         )
 
 print(
-    "{color_red}Copy the following into README.md:{no_color}\n".format(
+    "{color_red}Copy the following into README.rst:{no_color}\n".format(
         color_red="\x1b[1;31;40m", no_color="\x1b[0m"
     )
 )

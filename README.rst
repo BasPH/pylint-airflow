@@ -11,12 +11,12 @@ Pylint plugin for static code analysis on Airflow code.
 
 Installation:
 ```bash
-......
+pip install pylint-airflow
 ```
 
 Usage:
 ```bash
-pylint --load-plugins=pylint_airflow [your_file]
+pylint --load-plugins=pylint-airflow [your_file]
 ```
 
 This plugin runs on Python 3.6 and higher (due to usage of f-strings).
@@ -59,7 +59,7 @@ Documentation is available on Read the Docs. TODO: make docs, upload, and make l
 
 ## Contributing
 
-Suggestions for more checks are always welcome, please create an issue on GitHub. Read [CONTRIBUTING.md](https://github.com/BasPH/pylint-airflow/blob/master/CONTRIBUTING.md) for more details.
+Suggestions for more checks are always welcome, please create an issue on GitHub. Read [CONTRIBUTING.rst](https://github.com/BasPH/pylint-airflow/blob/master/CONTRIBUTING.rst) for more details.
 
 # TODO:
 - check if top level code

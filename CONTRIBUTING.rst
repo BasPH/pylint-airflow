@@ -13,26 +13,29 @@ Ideas and contributions are always welcome! Please create an issue or PR on [Git
 
 ## Makefile
 
-The project contains a Makefile with a few commonly used targets. The Makefile and CircleCI should align so that you can run the full CI pipeline locally with just `make ci`. Other targets are:
+The project contains a Makefile with a few commonly used targets. The Makefile and CircleCI should align so that you can run the full CI pipeline locally with just `make ci`. Other useful targets are (check the Makefile for all targets):
 
 - `make black`: check Black formatting
 - `make pylint`: check Pylint
 - `make pytest`: run all tests
-- `make validate_message_ids`: check if message IDs are defined without gaps
+- `make validate_message_ids`: check if messages are defined without gaps between ID numbers
 
 ## Adding messages
-- The README.md shows a Markdown table with all messages in this plugin. To generate the table, run `python scripts/generate_codes_table.py` and copy-paste in the README.md.
-- The CI checks if message IDs are defined 
-- Add tests.
+- Check the README for existing messages and add your new message with type and highest ID + 1.
+- To generate the table in the README, run `python scripts/generate_codes_table.py` and copy-paste in the README.rst.
+- The CI checks if message IDs are defined and increment by 1, without gaps. 
+- Always add tests.
 - Run CI pipeline locally with `make ci`.
 
 ## Conventions
 - Line length is set to 100 characters in .pylintrc and Makefile black target.
 - Documentation is written in reStructuredText (rst) format.
 - Versioning according to SemVer versioning (Read the Docs parses git tags against [PEP 440](https://www.python.org/dev/peps/pep-0440) rules to version the documentation).
-- Checkers are organized by Airflow component.
+- Checkers are organized by Airflow component (DAG, Operator, Hook, etc).
 
 ## Getting started
+If you're using PyCharm/IntelliJ, mark the `src` directory as "Sources Root". That way pylint-airflow is recognised as the local application, and "Optimize imports" groups those imports correctly.
+
 Some pointers if you're new to Pylint plugin development:
 - Check AST tokens on any script by running on the terminal:
 
