@@ -3,7 +3,6 @@
 from setuptools import setup, find_packages
 
 requirements = ["pylint"]
-dev_requirements = ["apache-airflow~=1.10.2", "black>=18.9b0", "pytest~=4.3"]
 
 setup(
     name="pylint-airflow",
@@ -13,7 +12,6 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=requirements,
-    extras_require={"dev": dev_requirements},
     keywords=["pylint", "airflow", "plugin"],
     classifiers=[
         "Development Status :: 3 - Alpha",

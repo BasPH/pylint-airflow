@@ -1,9 +1,11 @@
 .cache/
 .circleci/
+.git/
+.gitignore
+build/
+CONTRIBUTING.rst
+dist/
 docker/
 docs/
 images/
-.git/
-.gitignore
-CONTRIBUTING.rst
 LICENSE
