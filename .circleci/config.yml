@@ -12,16 +12,16 @@ jobs:
       - run:
           name: Check Black formatting
           command: |
-            find . -name '*.py' | xargs black --check --line-length=100
+            make black
       - run:
           name: Check Pylint
           command: |
-            find . -name '*.py' | xargs pylint --output-format=colorized
+            make pylint
       - run:
           name: Validate Pylint-Airflow message IDs
           command: |
-            python scripts/ci_validate_msg_ids.py
+            make validate_message_ids
       - run:
           name: Run tests
           command: |
-            pytest tests/
+            make pytest

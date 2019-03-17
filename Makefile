@@ -24,4 +24,4 @@ ci: | black pylint validate_message_ids pytest
 
 .PHONY: build_ci_image
 build_ci_image:
-	docker build -f docker/ci.Dockerfile .
+	docker build --file docker/ci.Dockerfile --tag basph/pylint-airflow-ci .

@@ -16,7 +16,7 @@ setup(
     extras_require={"dev": dev_requirements},
     keywords=["pylint", "airflow", "plugin"],
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",

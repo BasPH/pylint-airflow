@@ -7,5 +7,4 @@ images/
 .gitignore
 CONTRIBUTING.rst
 LICENSE
-Makefile
 README.rst
