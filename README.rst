@@ -1,27 +1,39 @@
-<img src="images/pylint-airflow.png" align="right" />
+.. image:: images/pylint-airflow.png
+  :alt: Pylint-Airflow
+  :align: right
 
-# pylint-airflow
+##############
+Pylint-Airflow
+##############
 
-[![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/BasPH/airflow-examples/blob/master/LICENSE)
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+  :alt: Code style: Black
+  :target: https://github.com/ambv/black
+
+.. image:: https://img.shields.io/badge/License-MIT-blue.svg
+  :alt: License: MIT
+  :target: https://github.com/BasPH/airflow-examples/blob/master/LICENSE
 
 Pylint plugin for static code analysis on Airflow code.
 
-## Usage
+*****
+Usage
+*****
 
 Installation:
-```bash
-pip install pylint-airflow
-```
+.. code-block:: bash
+  pip install pylint-airflow
 
 Usage:
-```bash
-pylint --load-plugins=pylint-airflow [your_file]
-```
+.. code-block:: bash
+  pylint --load-plugins=pylint-airflow [your_file]
 
 This plugin runs on Python 3.6 and higher (due to usage of f-strings).
 
-## Error codes
+***********
+Error codes
+***********
+
 The Pylint-Airflow codes follow the structure `{I,C,R,W,E,F}83{0-9}{0-9}`, where:
 
 - The characters show:
@@ -49,15 +61,21 @@ The current codes are:
 | E8302 | duplicate-dependency              | Task dependencies can be defined only once.                                                                                                                     |
 | E8303 | dag-with-cycles                   | A DAG is acyclic and cannot contain cycles.                                                                                                                     |
 
-### Note
+Note
+====
+
 Not all messages are activated by default. For example:
 ... TODO explain task-context-argname vs task-context-argname-under ...
 
-## Documentation
+*************
+Documentation
+*************
 
 Documentation is available on Read the Docs. TODO: make docs, upload, and make link here.
 
-## Contributing
+************
+Contributing
+************
 
 Suggestions for more checks are always welcome, please create an issue on GitHub. Read [CONTRIBUTING.rst](https://github.com/BasPH/pylint-airflow/blob/master/CONTRIBUTING.rst) for more details.
 
