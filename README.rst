@@ -21,11 +21,15 @@ Usage
 *****
 
 Installation:
+
 .. code-block:: bash
+
   pip install pylint-airflow
 
 Usage:
+
 .. code-block:: bash
+
   pylint --load-plugins=pylint-airflow [your_file]
 
 This plugin runs on Python 3.6 and higher (due to usage of f-strings).
@@ -34,16 +38,16 @@ This plugin runs on Python 3.6 and higher (due to usage of f-strings).
 Error codes
 ***********
 
-The Pylint-Airflow codes follow the structure `{I,C,R,W,E,F}83{0-9}{0-9}`, where:
+The Pylint-Airflow codes follow the structure ``{I,C,R,W,E,F}83{0-9}{0-9}``, where:
 
 - The characters show:
 
-    - ``I`` = Info
-    - ``C`` = Convention
-    - ``R`` = Refactor
-    - ``W`` = Warning
-    - ``E`` = Error
-    - ``F`` = Fatal
+  - ``I`` = Info
+  - ``C`` = Convention
+  - ``R`` = Refactor
+  - ``W`` = Warning
+  - ``E`` = Error
+  - ``F`` = Fatal
 
 - ``83`` is the base id (see all here https://github.com/PyCQA/pylint/blob/master/pylint/checkers/__init__.py)
 - ``{0-9}{0-9}`` is any number 00-99
@@ -92,11 +96,4 @@ Documentation is available on Read the Docs. TODO: make docs, upload, and make l
 Contributing
 ************
 
-Suggestions for more checks are always welcome, please create an issue on GitHub. Read [CONTRIBUTING.rst](https://github.com/BasPH/pylint-airflow/blob/master/CONTRIBUTING.rst) for more details.
-
-# TODO:
-- check if top level code
-- check if params supplied via operator args exist
-- if python_callable with **kwargs and provide_context -> rename to **context
-- in the python_callable function, extract variables from the context in the arguments
-- ensure dag_id is same as filename
+Suggestions for more checks are always welcome, please create an issue on GitHub. Read `CONTRIBUTING.rst <https://github.com/BasPH/pylint-airflow/blob/master/CONTRIBUTING.rst>`_  for more details.
