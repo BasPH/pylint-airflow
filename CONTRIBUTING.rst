@@ -15,10 +15,10 @@ Ideas and contributions are always welcome! Please create an issue or PR on [Git
 
 The project contains a Makefile with a few commonly used targets. The Makefile and CircleCI should align so that you can run the full CI pipeline locally with just `make ci`. Other useful targets are (check the Makefile for all targets):
 
-- `make black`: check Black formatting
-- `make pylint`: check Pylint
-- `make pytest`: run all tests
-- `make validate_message_ids`: check if messages are defined without gaps between ID numbers
+- ``make black``: check Black formatting
+- ``make pylint``: check Pylint
+- ``make pytest``: run all tests
+- ``make validate_message_ids``: check if messages are defined without gaps between ID numbers
 
 ## Adding messages
 - Check the README for existing messages and add your new message with type and highest ID + 1.

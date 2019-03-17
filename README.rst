@@ -37,18 +37,20 @@ Error codes
 The Pylint-Airflow codes follow the structure `{I,C,R,W,E,F}83{0-9}{0-9}`, where:
 
 - The characters show:
-    - `I` = Info
-    - `C` = Convention
-    - `R` = Refactor
-    - `W` = Warning
-    - `E` = Error
-    - `F` = Fatal
-- `83` is the base id (see all here https://github.com/PyCQA/pylint/blob/master/pylint/checkers/__init__.py)
-- `{0-9}{0-9}` is any number 00-99
+
+    - ``I`` = Info
+    - ``C`` = Convention
+    - ``R`` = Refactor
+    - ``W`` = Warning
+    - ``E`` = Error
+    - ``F`` = Fatal
+
+- ``83`` is the base id (see all here https://github.com/PyCQA/pylint/blob/master/pylint/checkers/__init__.py)
+- ``{0-9}{0-9}`` is any number 00-99
 
 The current codes are:
 
-+=======+===================================+=================================================================================================================================================================+
++-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Code  | Symbol                            | Description                                                                                                                                                     |
 +=======+===================================+=================================================================================================================================================================+
 | C8300 | different-operator-varname-taskid | For consistency assign the same variable name and task_id to operators.                                                                                         |
@@ -78,13 +80,7 @@ The current codes are:
 | E8303 | dag-with-cycles                   | A DAG is acyclic and cannot contain cycles.                                                                                                                     |
 +-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | E8304 | task-no-dag                       | A task must know a DAG instance to run.                                                                                                                         |
-+=======+===================================+=================================================================================================================================================================+
-
-Note
-====
-
-Not all messages are activated by default. For example:
-... TODO explain task-context-argname vs task-context-argname-under ...
++-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 *************
 Documentation

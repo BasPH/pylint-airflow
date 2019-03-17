@@ -7,7 +7,7 @@ Made a custom script because I wanted messages ordered by
 2. message code
 
 For example:
-+=======+=========+=============+
++-------+---------+-------------+
 | Code  | Symbol  | Description |
 +=======+=========+=============+
 | C8300 | symbol1 | Lorem ipsum |
@@ -82,11 +82,11 @@ for message in linter.msgs_store.messages:
 # Generate Markdown table
 lengths = [5, max_symbol_length, max_description_length]
 lines = [
-    gen_splitter(symbol="=", lengths=lengths),
+    gen_splitter(symbol="-", lengths=lengths),
     gen_single_row(content=["Code", "Symbol", "Description"], lengths=lengths),
     gen_splitter(symbol="=", lengths=lengths),
     gen_content(msgs=messages, lengths=lengths),
-    gen_splitter(symbol="=", lengths=lengths),
+    gen_splitter(symbol="-", lengths=lengths),
 ]
 result = "\n".join(lines)
 
