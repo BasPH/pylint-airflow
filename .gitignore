@@ -5,3 +5,5 @@ __pycache__/
 .cache/
 .pylint.d/
 .pytest_cache/
+build/
+dist/
