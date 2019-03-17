@@ -11,8 +11,13 @@ validate_message_ids:
 	python scripts/ci_validate_msg_ids.py
 
 .PHONY: pytest
-pytest:
+pytest: clean-compiled
 	pytest tests/
+
+.PHONY: clean-compiled
+clean-compiled: ## remove Python file artifacts
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -rf {} +
 
 .PHONY: ci
 ci: | black pylint validate_message_ids pytest
