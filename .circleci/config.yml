@@ -1,41 +1,37 @@
 version: 2
 
 _steps: &steps
-  - checkout
-  - run:
-      name: pwd
-      command: |
-        pwd
-        ls -lah
-  - run:
-      name: Pip install Pylint-Airflow package
-      command: |
-        pip install .
-  - run:
-      name: Check Black formatting
-      command: |
-        make black
-  - run:
-      name: Check Pylint
-      command: |
-        make pylint
-  - run:
-      name: Validate Pylint-Airflow message IDs
-      command: |
-        make validate_message_ids
-  - run:
-      name: Run tests
-      command: |
-        make pytest
+  steps:
+    - checkout
+    - run:
+        name: Pip install Pylint-Airflow package
+        command: pip install .
+    - run:
+        name: Check Black formatting
+        command: make black
+    - run:
+        name: Check Pylint
+        command: make pylint
+    - run:
+        name: Validate Pylint-Airflow message IDs
+        command: make validate_message_ids
+    - run:
+        name: Run tests
+        command: make pytest
 
 jobs:
   python36:
     docker:
       - image: basph/pylint-airflow-ci:3.6
-    steps:
-      <<: *steps
+    <<: *steps
   python37:
     docker:
       - image: basph/pylint-airflow-ci:3.7
-    steps:
-      <<: *steps
+    <<: *steps
+
+workflows:
+  version: 2
+  test_versions:
+    jobs:
+      - python36
+      - python37
