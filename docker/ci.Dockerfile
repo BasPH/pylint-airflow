@@ -3,13 +3,16 @@
 
 FROM continuumio/miniconda3:4.5.12
 
+ARG CONDA_PYTHON_VERSION
+
 WORKDIR /pylint-airflow
 # Note: Items to exclude in the Docker image are listed in .dockerignore
 COPY . .
 
 # As long as Airflow requires this GPL dependency we have to install with SLUGIFY_USES_TEXT_UNIDECODE=yes
 # https://github.com/apache/airflow/pull/4513
-RUN apt-get update && \
+RUN	conda install --yes python=${CONDA_PYTHON_VERSION} && \
+    apt-get update && \
 	apt-get install -y gcc g++ make --no-install-recommends && \
 	SLUGIFY_USES_TEXT_UNIDECODE=yes pip install .[dev] && \
 	apt-get remove -y --purge gcc g++ && \
