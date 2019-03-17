@@ -1,6 +1,6 @@
-.. image:: images/pylint-airflow.png
-  :alt: Pylint-Airflow
-  :align: right
+.. raw:: html
+
+   <img src="images/pylint-airflow.png" align="right" />
 
 ##############
 Pylint-Airflow
