@@ -19,7 +19,7 @@ def is_class_part_of_pylint_airflow(class_):
     return class_.__module__.split(".")[0] == "pylint_airflow"
 
 
-def check_if_message_ids_increment(message_ids: List[str]):
+def check_if_msg_ids_increment(message_ids: List[str]):
     """
     Check if the message IDs (within 1 group) start at 0 and increment by 1. E.g. C8300, C8301, ...
     :param List[str] message_ids: Message IDs within single group
@@ -34,11 +34,11 @@ def check_if_message_ids_increment(message_ids: List[str]):
     if ids[-1] != maxid:
         # Could come up with some sorting function for message_ids, but sorting numerically and
         # checking last id proved easier.
-        formatted_message_ids = [f"{message_type}{BASE_ID}{str(id_).zfill(2)}" for id_ in ids]
+        formatted_message_ids = [f"{msg_type}{BASE_ID}{str(id_).zfill(2)}" for id_ in ids]
         raise AssertionError(f"Message ids should increment by 1. {formatted_message_ids}")
 
 
-def check_if_message_ids_in_readme(message_ids: List[str]):
+def check_if_msg_ids_in_readme(message_ids: List[str]):
     """
     Check if message IDs are listed in the README.
     :param List[str] message_ids: All message IDs found in pylint-airflow
@@ -62,10 +62,10 @@ register_checkers(linter)
 # Running register_checkers automatically validates there are no duplicate message ids
 for message in linter.msgs_store.messages:
     if is_class_part_of_pylint_airflow(message.checker):
-        message_type = message.msgid[0]
-        messages[message_type].append(message.msgid)
+        msg_type = message.msgid[0]
+        messages[msg_type].append(message.msgid)
 
-for message_type, message_ids in messages.items():
-    check_if_message_ids_increment(message_ids)
+for msg_type, msg_ids in messages.items():
+    check_if_msg_ids_increment(msg_ids)
 
-check_if_message_ids_in_readme([msg_id for msg_list in messages.values() for msg_id in msg_list])
+check_if_msg_ids_in_readme([msg_id for msg_list in messages.values() for msg_id in msg_list])

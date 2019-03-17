@@ -23,7 +23,7 @@ For example:
 """
 
 from collections import defaultdict
-from typing import List
+from typing import List, Dict, Tuple
 
 from pylint.lint import PyLinter
 
@@ -36,18 +36,43 @@ def is_class_part_of_pylint_airflow(class_):
 
 
 def gen_splitter(symbol: str, lengths: List[int]):
+    """
+    Generate a "splitter" line for an rst table.
+    E.g. +-------+---------+-------------+
+    :param str symbol: The character to use for filling cells
+    :param List[int] lengths: The length of each cell to generate
+    :return: Splitter line
+    :rtype: str
+    """
+
     content = f"{symbol}+{symbol}".join(f"{symbol*nchars}" for nchars in lengths)
     return f"+{symbol}{content}{symbol}+"
 
 
 def gen_single_row(content: List, lengths: List[int]):
+    """
+    Generate a row for an rst table.
+    E.g. "| C8300 | symbol1 | Lorem ipsum |"
+    :param List content: The values of each cell
+    :param List[int] lengths: The length of each cell to generate
+    :return: Table row with whitespace padded cells
+    :rtype: str
+    """
     assert len(content) == len(lengths)
     content_length = list(zip(content, lengths))
     row = " | ".join(f"{value.ljust(length)}" for value, length in content_length)
     return f"| {row} |"
 
 
-def gen_content(msgs, lengths: List[int]):
+def gen_content(msgs: Dict[str, Dict[str, Tuple[str, str]]], lengths: List[int]):
+    """
+    Generate the content part of an rst table.
+    :param Dict[str, Dict[str, Tuple[str, str]]] msgs: all values for the table
+        ({msg type: {msg number: (symbol, description)}})
+    :param List[int] lengths: The length of each cell to generate
+    :return: Formatted table rows
+    :rtype: str
+    """
     lines = []
     splitter = gen_splitter(symbol="-", lengths=lengths)
 
@@ -80,15 +105,15 @@ for message in linter.msgs_store.messages:
             max_description_length = len(message.descr)
 
 # Generate Markdown table
-lengths = [5, max_symbol_length, max_description_length]
-lines = [
-    gen_splitter(symbol="-", lengths=lengths),
-    gen_single_row(content=["Code", "Symbol", "Description"], lengths=lengths),
-    gen_splitter(symbol="=", lengths=lengths),
-    gen_content(msgs=messages, lengths=lengths),
-    gen_splitter(symbol="-", lengths=lengths),
+col_lengths = [5, max_symbol_length, max_description_length]
+table = [
+    gen_splitter(symbol="-", lengths=col_lengths),
+    gen_single_row(content=["Code", "Symbol", "Description"], lengths=col_lengths),
+    gen_splitter(symbol="=", lengths=col_lengths),
+    gen_content(msgs=messages, lengths=col_lengths),
+    gen_splitter(symbol="-", lengths=col_lengths),
 ]
-result = "\n".join(lines)
+result = "\n".join(table)
 
 print(
     "{color_red}Copy the following into README.rst:{no_color}\n".format(
