@@ -1,9 +1,4 @@
 #!/bin/bash
 
-env
-echo ================
-pwd
-echo ================
-ls -lah
-echo ================
+# Note: current dir is the dir containing Dockerfile (configured in Docker Hub)
 docker build --build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} -f ci.Dockerfile -t $IMAGE_NAME ..
