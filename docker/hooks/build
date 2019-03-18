@@ -1,6 +1,9 @@
 #!/bin/bash
 
 env
+echo ================
 pwd
+echo ================
 ls -lah
-docker build --build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} -f $DOCKERFILE_PATH -t $IMAGE_NAME ..
+echo ================
+docker build --build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} -f ci.Dockerfile -t $IMAGE_NAME ..
