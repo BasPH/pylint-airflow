@@ -20,7 +20,3 @@ RUN	conda install --yes python=${CONDA_PYTHON_VERSION} && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
-
-# Note: In CircleCI if no command is specified then command and entrypoint are be ignored. See https://circleci.com/docs/2.0/configuration-reference/#docker
-# Note2: The entrypoint script is not built into the image! It must be volume mounted to a running container.
-ENTRYPOINT ["./docker/entrypoint.sh"]

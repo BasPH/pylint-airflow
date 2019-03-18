@@ -1,0 +1,6 @@
+#!/bin/bash
+
+env
+pwd
+ls -lah
+docker build --build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} -f $DOCKERFILE_PATH -t $IMAGE_NAME $CIRCLE_WORKING_DIRECTORY
