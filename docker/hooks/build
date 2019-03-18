@@ -1,10 +1,3 @@
 #!/bin/bash
 
-echo "test"
-env
-
-docker build \
---build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} \
--f $DOCKERFILE_PATH \
--t $IMAGE_NAME \
-.
+docker build --build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} -f $DOCKERFILE_PATH -t $IMAGE_NAME .
