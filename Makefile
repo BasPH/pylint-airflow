@@ -24,10 +24,10 @@ ci: | clean-compiled black pylint validate_message_ids pytest
 
 .PHONY: ci-docker
 ci-docker: build_ci_image
-	docker run -ti -v `pwd`:/pylint-airflow -w /pylint-airflow basph/pylint-airflow-ci:3.6 pip install .; make ci
-	docker run -ti -v `pwd`:/pylint-airflow -w /pylint-airflow basph/pylint-airflow-ci:3.7 pip install .; make ci
+	docker run -ti -v `pwd`:/pylint-airflow -w /pylint-airflow basph/pylint-airflow-ci:3.6-slim pip install .; make ci
+	docker run -ti -v `pwd`:/pylint-airflow -w /pylint-airflow basph/pylint-airflow-ci:3.7-slim pip install .; make ci
 
 .PHONY: build_ci_image
 build_ci_image:
-	docker build --file docker/ci.Dockerfile --build-arg CONDA_PYTHON_VERSION=3.6 --tag basph/pylint-airflow-ci:3.6 .
-	docker build --file docker/ci.Dockerfile --build-arg CONDA_PYTHON_VERSION=3.7 --tag basph/pylint-airflow-ci:3.7 .
+	docker build --file docker/ci.Dockerfile --build-arg PYTHON_VERSION=3.6-slim --tag basph/pylint-airflow-ci:3.6-slim .
+	docker build --file docker/ci.Dockerfile --build-arg PYTHON_VERSION=3.7-slim --tag basph/pylint-airflow-ci:3.7-slim .

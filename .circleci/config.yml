@@ -22,11 +22,11 @@ _steps: &steps
 jobs:
   python36:
     docker:
-      - image: basph/pylint-airflow-ci:3.6
+      - image: basph/pylint-airflow-ci:3.6-slim
     <<: *steps
   python37:
     docker:
-      - image: basph/pylint-airflow-ci:3.7
+      - image: basph/pylint-airflow-ci:3.7-slim
     <<: *steps
 
 workflows:
