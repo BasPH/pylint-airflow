@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Note: current dir is the dir containing Dockerfile (configured in Docker Hub)
-docker build --build-arg CONDA_PYTHON_VERSION=${DOCKER_TAG} -f ci.Dockerfile -t $IMAGE_NAME ..
+docker build --build-arg PYTHON_VERSION=${DOCKER_TAG} -f ci.Dockerfile -t $IMAGE_NAME ..
