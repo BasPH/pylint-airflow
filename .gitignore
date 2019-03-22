@@ -1,9 +1,9 @@
-.idea/
-__pycache__/
 *.egg-info/
-.DS_Store
 .cache/
+.DS_Store
+.idea/
 .pylint.d/
 .pytest_cache/
+__pycache__/
 build/
 dist/
