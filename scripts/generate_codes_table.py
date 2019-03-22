@@ -35,6 +35,15 @@ def is_class_part_of_pylint_airflow(class_):
     return class_.__module__.split(".")[0] == "pylint_airflow"
 
 
+def _rst_escape_string(string: str) -> str:
+    """
+    Escape special characters.
+    :param str string: Input string
+    :return: String with escaped characters
+    """
+    return string.replace("*", "\\*")
+
+
 def gen_splitter(symbol: str, lengths: List[int]):
     """
     Generate a "splitter" line for an rst table.
@@ -97,7 +106,8 @@ linter = PyLinter()
 register_checkers(linter)
 for message in linter.msgs_store.messages:
     if is_class_part_of_pylint_airflow(message.checker):
-        messages[message.msgid[0]][message.msgid[-4:]] = (message.symbol, message.descr)
+        description = _rst_escape_string(message.descr)
+        messages[message.msgid[0]][message.msgid[-4:]] = (message.symbol, description)
 
         if len(message.symbol) > max_symbol_length:
             max_symbol_length = len(message.symbol)

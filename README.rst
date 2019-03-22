@@ -65,7 +65,7 @@ The current codes are:
 +-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | C8303 | task-no-dependencies              | Sometimes a task without any dependency is desired, however often it is the result of a forgotten dependency.                                                   |
 +-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| C8304 | task-context-argname              | Indicate you expect Airflow task context variables in the **kwargs argument by renaming to **context.                                                           |
+| C8304 | task-context-argname              | Indicate you expect Airflow task context variables in the \*\*kwargs argument by renaming to \*\*context.                                                       |
 +-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | C8305 | task-context-separate-arg         | To avoid unpacking kwargs from the Airflow task context in a function, you can set the needed variables as arguments in the function.                           |
 +-------+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
