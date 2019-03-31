@@ -50,16 +50,25 @@ class TestOperatorChecker(CheckerTestCase):
         with self.assertNoMessages():
             self.checker.visit_assign(assign_node)
 
-    def test_match_callable_taskid(self):
-        """python_callable function name does not match _[task_id] (= invalid), expect message."""
-        testcase = """
-        from airflow.operators.python_operator import PythonOperator
-        
-        def foo():
-            print("dosomething")
-            
-        mytask = PythonOperator(task_id="mytask", python_callable=foo) #@
-        """
+    @pytest.mark.parametrize(
+        "imports,operator_def",
+        [
+            (
+                "from airflow.operators.python_operator import PythonOperator",
+                'mytask = PythonOperator(task_id="mytask", python_callable=foo) #@',
+            ),
+            (
+                "from airflow.operators import python_operator",
+                'mytask = python_operator.PythonOperator(task_id="mytask", python_callable=foo) #@',
+            ),
+            (
+                "import airflow.operators.python_operator",
+                'mytask = airflow.operators.python_operator.PythonOperator(task_id="mytask", python_callable=foo) #@',
+            ),
+        ],
+    )
+    def test_match_callable_taskid(self, imports, operator_def):
+        testcase = f"{imports}\ndef foo(): print('dosomething')\n{operator_def}"
         expected_message = "match-callable-taskid"
 
         assign_node = astroid.extract_node(testcase)

@@ -68,7 +68,11 @@ class OperatorChecker(checkers.BaseChecker):
         """
         if isinstance(node.value, astroid.Call):
             function_node = safe_infer(node.value.func)
-            if function_node.is_subtype_of("airflow.models.BaseOperator"):
+            if (
+                function_node is not None
+                and not isinstance(function_node, astroid.bases.BoundMethod)
+                and function_node.is_subtype_of("airflow.models.BaseOperator")
+            ):
                 var_name = node.targets[0].name
                 task_id = None
                 python_callable_name = None

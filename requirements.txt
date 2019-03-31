@@ -1,3 +1,5 @@
 apache-airflow~=1.10.2
 black>=18.9b0
 pytest~=4.3
+pytest-mock==1.10.1
+pytest-helpers-namespace==2019.1.8

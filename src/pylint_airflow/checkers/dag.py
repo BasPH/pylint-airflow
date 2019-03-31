@@ -59,26 +59,48 @@ class DagChecker(checkers.BaseChecker):
     @utils.check_messages("duplicate-dag-name", "match-dagid-filename")
     def visit_module(self, node: astroid.Module):
         """Checks in the context of (a) complete DAG(s)."""
-        assigns = node.nodes_of_class(astroid.Assign)
         dagids_nodes = defaultdict(list)
+        assigns = node.nodes_of_class(astroid.Assign)
+        withs = node.nodes_of_class(astroid.With)
+
+        # Find DAGs in assignments
         for assign in assigns:
             if isinstance(assign.value, astroid.Call):
-                function_node = safe_infer(assign.value.func)
-                if function_node.is_subtype_of("airflow.models.DAG"):
-                    for keyword in assign.value.keywords:
-                        # Currently only constants supported
-                        if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
-                            dagids_nodes[keyword.value.value].append(assign)
+                func = assign.value.func
+                if (hasattr(func, "name") and func.name == "DAG") or (
+                    hasattr(func, "attrname") and func.attrname == "DAG"
+                ):
+                    function_node = safe_infer(func)
+                    if function_node.is_subtype_of("airflow.models.DAG"):
+                        for keyword in assign.value.keywords:
+                            # Currently only constants supported
+                            if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
+                                dagids_nodes[keyword.value.value].append(assign)
+
+        # Find DAGs in context managers
+        for with_ in withs:
+            for with_item in with_.items[0]:
+                if isinstance(with_item, astroid.Call):
+                    func = with_item.func
+                    if (hasattr(func, "name") and func.name == "DAG") or (
+                        hasattr(func, "attrname") and func.attrname == "DAG"
+                    ):
+                        function_node = safe_infer(func)
+                        if function_node.is_subtype_of("airflow.models.DAG"):
+                            for keyword in with_item.keywords:
+                                if keyword.arg == "dag_id" and isinstance(
+                                    keyword.value, astroid.Const
+                                ):
+                                    dagids_nodes[keyword.value.value].append(with_item)
 
         # Check if single DAG and if equals filename
         # Unit test nodes have file "<?>"
-        if node.file != "<?>":
-            if len(dagids_nodes) == 1:
-                dagid, _ = list(dagids_nodes.items())[0]
-                expected_filename = f"{dagid}.py"
-                current_filename = node.file.split("/")[-1]
-                if expected_filename != current_filename:
-                    self.add_message("match-dagid-filename", node=node)
+        if len(dagids_nodes) == 1 and node.file != "<?>":
+            dagid, _ = list(dagids_nodes.items())[0]
+            expected_filename = f"{dagid}.py"
+            current_filename = node.file.split("/")[-1]
+            if expected_filename != current_filename:
+                self.add_message("match-dagid-filename", node=node)
 
         duplicate_dagids = [
             (dagid, nodes) for dagid, nodes in dagids_nodes.items() if len(nodes) >= 2
