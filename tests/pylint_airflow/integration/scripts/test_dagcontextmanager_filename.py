@@ -1,3 +1,4 @@
+# [match-dagid-filename]
 """DAG assignment via context manager, checking DAG()"""
 
 from airflow.models import DAG

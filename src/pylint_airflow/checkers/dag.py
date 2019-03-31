@@ -1,6 +1,7 @@
 """Checks on Airflow DAGs."""
 
 from collections import defaultdict
+from typing import Tuple, Union
 
 import astroid
 from pylint import checkers
@@ -63,35 +64,42 @@ class DagChecker(checkers.BaseChecker):
         assigns = node.nodes_of_class(astroid.Assign)
         withs = node.nodes_of_class(astroid.With)
 
+        def _find_dag(
+            call_node: astroid.Call, func: Union[astroid.Name, astroid.Attribute]
+        ) -> Tuple[Union[str, None], Union[astroid.Assign, astroid.Call, None]]:
+            if (hasattr(func, "name") and func.name == "DAG") or (
+                hasattr(func, "attrname") and func.attrname == "DAG"
+            ):
+                function_node = safe_infer(func)
+                if function_node.is_subtype_of("airflow.models.DAG"):
+                    # Check for "dag_id" as keyword arg
+                    if call_node.keywords is not None:
+                        for keyword in call_node.keywords:
+                            # Only constants supported
+                            if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
+                                return str(keyword.value.value), call_node
+                    # DAG id is given as (not keyword) argument
+                    return call_node.args[0].value, call_node
+
+            return None, None
+
         # Find DAGs in assignments
         for assign in assigns:
             if isinstance(assign.value, astroid.Call):
                 func = assign.value.func
-                if (hasattr(func, "name") and func.name == "DAG") or (
-                    hasattr(func, "attrname") and func.attrname == "DAG"
-                ):
-                    function_node = safe_infer(func)
-                    if function_node.is_subtype_of("airflow.models.DAG"):
-                        for keyword in assign.value.keywords:
-                            # Currently only constants supported
-                            if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
-                                dagids_nodes[keyword.value.value].append(assign)
+                dagid_node = _find_dag(assign.value, func)
+                if all(dagid_node):  # Checks if there are no Nones
+                    dagids_nodes[dagid_node[0]].append(dagid_node[1])
 
         # Find DAGs in context managers
         for with_ in withs:
-            for with_item in with_.items[0]:
-                if isinstance(with_item, astroid.Call):
-                    func = with_item.func
-                    if (hasattr(func, "name") and func.name == "DAG") or (
-                        hasattr(func, "attrname") and func.attrname == "DAG"
-                    ):
-                        function_node = safe_infer(func)
-                        if function_node.is_subtype_of("airflow.models.DAG"):
-                            for keyword in with_item.keywords:
-                                if keyword.arg == "dag_id" and isinstance(
-                                    keyword.value, astroid.Const
-                                ):
-                                    dagids_nodes[keyword.value.value].append(with_item)
+            for with_item in with_.items:
+                call_node = with_item[0]
+                if isinstance(call_node, astroid.Call):
+                    func = call_node.func
+                    dagid_node = _find_dag(call_node, func)
+                    if all(dagid_node):  # Checks if there are no Nones
+                        dagids_nodes[dagid_node[0]].append(dagid_node[1])
 
         # Check if single DAG and if equals filename
         # Unit test nodes have file "<?>"

@@ -1,9 +1,6 @@
 """Tests for the DAG checker."""
-import os
-import pathlib
 
 import astroid
-import pytest
 from pylint.testutils import CheckerTestCase, Message
 
 import pylint_airflow
@@ -44,18 +41,3 @@ class TestDagChecker(CheckerTestCase):
         ast = astroid.parse(testcase)
         with self.assertNoMessages():
             self.checker.visit_module(ast)
-
-    match_dagid_filename_testfilesdir = os.path.join(
-        pytest.helpers.file_abspath(__file__), "data/test_dag/test_match_dagid_filename"
-    )
-    match_dagid_filename_testfiles = list(
-        pathlib.Path(match_dagid_filename_testfilesdir).glob("*.py")
-    )
-
-    @pytest.mark.parametrize(
-        "test_filepath",
-        match_dagid_filename_testfiles,
-        ids=[p.stem for p in match_dagid_filename_testfiles],
-    )
-    def test_match_dagid_filename(self, test_filepath):
-        pytest.helpers.functional_test(test_filepath)
