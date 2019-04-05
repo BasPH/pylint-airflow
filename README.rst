@@ -14,6 +14,9 @@ Pylint-Airflow
   :alt: License: MIT
   :target: https://github.com/BasPH/airflow-examples/blob/master/LICENSE
 
+.. image:: https://img.shields.io/circleci/project/github/BasPH/pylint-airflow/master.svg
+  :target: https://circleci.com/gh/BasPH/workflows/pylint-airflow/tree/master
+
 Pylint plugin for static code analysis on Airflow code.
 
 *****
