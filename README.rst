@@ -30,7 +30,7 @@ Usage:
 
 .. code-block:: bash
 
-  pylint --load-plugins=pylint-airflow [your_file]
+  pylint --load-plugins=pylint_airflow [your_file]
 
 This plugin runs on Python 3.6 and higher.
 
