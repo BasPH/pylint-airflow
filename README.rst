@@ -32,7 +32,7 @@ Usage:
 
   pylint --load-plugins=pylint-airflow [your_file]
 
-This plugin runs on Python 3.6 and higher (due to usage of f-strings).
+This plugin runs on Python 3.6 and higher.
 
 ***********
 Error codes
