@@ -30,7 +30,7 @@ release = "0.0.1-alpha"
 # -- General configuration ---------------------------------------------------
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
