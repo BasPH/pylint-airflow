@@ -4,6 +4,9 @@ _steps: &steps
   steps:
     - checkout
     - run:
+        name: Update requirements
+        command: pip install -r requirements.txt
+    - run:
         name: Pip install Pylint-Airflow package
         command: pip install .
     - run:
