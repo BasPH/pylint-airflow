@@ -67,6 +67,13 @@ class DagChecker(checkers.BaseChecker):
         def _find_dag(
             call_node: astroid.Call, func: Union[astroid.Name, astroid.Attribute]
         ) -> Tuple[Union[str, None], Union[astroid.Assign, astroid.Call, None]]:
+            """
+            Find DAG in a call_node.
+            :param call_node:
+            :param func:
+            :return: (dag_id, node)
+            :rtype: Tuple
+            """
             if (hasattr(func, "name") and func.name == "DAG") or (
                 hasattr(func, "attrname") and func.attrname == "DAG"
             ):
@@ -78,8 +85,10 @@ class DagChecker(checkers.BaseChecker):
                             # Only constants supported
                             if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
                                 return str(keyword.value.value), call_node
-                    # DAG id is given as (not keyword) argument
-                    return call_node.args[0].value, call_node
+                    # DAG id cannot be fetched, dag_id is not a constant,
+                    # e.g. when it's given by a formatted string.
+                    # TODO support dag_ids set in other ways than constant.
+                    return None, call_node
 
             return None, None
 
@@ -87,9 +96,9 @@ class DagChecker(checkers.BaseChecker):
         for assign in assigns:
             if isinstance(assign.value, astroid.Call):
                 func = assign.value.func
-                dagid_node = _find_dag(assign.value, func)
-                if all(dagid_node):  # Checks if there are no Nones
-                    dagids_nodes[dagid_node[0]].append(dagid_node[1])
+                dagid, dagnode = _find_dag(assign.value, func)
+                if dagid and dagnode:  # Checks if there are no Nones
+                    dagids_nodes[dagid].append(dagnode)
 
         # Find DAGs in context managers
         for with_ in withs:
@@ -97,9 +106,9 @@ class DagChecker(checkers.BaseChecker):
                 call_node = with_item[0]
                 if isinstance(call_node, astroid.Call):
                     func = call_node.func
-                    dagid_node = _find_dag(call_node, func)
-                    if all(dagid_node):  # Checks if there are no Nones
-                        dagids_nodes[dagid_node[0]].append(dagid_node[1])
+                    dagid, dagnode = _find_dag(call_node, func)
+                    if dagid and dagnode:  # Checks if there are no Nones
+                        dagids_nodes[dagid].append(dagnode)
 
         # Check if single DAG and if equals filename
         # Unit test nodes have file "<?>"
@@ -111,7 +120,9 @@ class DagChecker(checkers.BaseChecker):
                 self.add_message("match-dagid-filename", node=node)
 
         duplicate_dagids = [
-            (dagid, nodes) for dagid, nodes in dagids_nodes.items() if len(nodes) >= 2
+            (dagid, nodes)
+            for dagid, nodes in dagids_nodes.items()
+            if len(nodes) >= 2 and dagid is not None
         ]
         for (dagid, assign_nodes) in duplicate_dagids:
             self.add_message("duplicate-dag-name", node=assign_nodes[-1], args=dagid)
