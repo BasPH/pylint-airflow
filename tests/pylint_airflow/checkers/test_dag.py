@@ -25,7 +25,7 @@ class TestDagChecker(CheckerTestCase):
         dag4 = DAG(dag_id=f"{dagname}foo")  # test dag_id as f-string
         """
         ast = astroid.parse(testcase)
-        expected_msg_node = ast.body[4]
+        expected_msg_node = ast.body[4].value
         with self.assertAddsMessages(
             Message(msg_id="duplicate-dag-name", node=expected_msg_node, args="lintme")
         ):
