@@ -45,17 +45,24 @@ class PylintAirflowLintModuleTest(LintModuleTest):
         self._linter.check(self._test_filepath)
 
         expected_msgs = self._get_expected()
-        received_msgs, _ = self._get_received()
+        received_msgs, received_text = self._get_received()
+        linesymbol_text = {(ol.lineno, ol.symbol): ol.msg for ol in received_text}
 
         if expected_msgs != received_msgs:
             missing, unexpected = multiset_difference(expected_msgs, received_msgs)
             msg = [f"Wrong results for file '{self._test_file.base}':"]
             if missing:
                 msg.append("\nExpected in testdata:")
-                msg.extend(f" {line_nr:3d}: {symbol}" for line_nr, symbol in sorted(missing))
+                msg.extend(
+                    f" {line_nr:3d}: {symbol} - {linesymbol_text[(line_nr, symbol)]}"
+                    for line_nr, symbol in sorted(missing)
+                )
             if unexpected:
                 msg.append("\nUnexpected in testdata:")
-                msg.extend(f" {line_nr:3d}: {symbol}" for line_nr, symbol in sorted(unexpected))
+                msg.extend(
+                    f" {line_nr:3d}: {symbol} - {linesymbol_text[(line_nr,symbol)]}"
+                    for line_nr, symbol in sorted(unexpected)
+                )
             pytest.fail("\n".join(msg))
 
 
