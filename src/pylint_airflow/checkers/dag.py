@@ -86,7 +86,7 @@ class DagChecker(checkers.BaseChecker):
                             if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
                                 return str(keyword.value.value), call_node
 
-                    if len(call_node.args) > 0:
+                    if call_node.args:
                         # TODO support dag_ids set in other ways than constant.
                         return call_node.args[0].value, call_node
 
