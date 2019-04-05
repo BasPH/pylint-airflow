@@ -85,10 +85,10 @@ class DagChecker(checkers.BaseChecker):
                             # Only constants supported
                             if keyword.arg == "dag_id" and isinstance(keyword.value, astroid.Const):
                                 return str(keyword.value.value), call_node
-                    # DAG id cannot be fetched, dag_id is not a constant,
-                    # e.g. when it's given by a formatted string.
-                    # TODO support dag_ids set in other ways than constant.
-                    return None, call_node
+
+                    if len(call_node.args) > 0:
+                        # TODO support dag_ids set in other ways than constant.
+                        return call_node.args[0].value, call_node
 
             return None, None
 
