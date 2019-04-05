@@ -26,6 +26,7 @@ class PylintAirflowLintModuleTest(LintModuleTest):
     foobar = Magic()  # [no-magic]
 
     Defining expected messages in a .txt is not supported with this.
+    And ignore messages in the file itself with # pylint:disable=[symbol]
     """
 
     def __init__(self, test_filepath):
