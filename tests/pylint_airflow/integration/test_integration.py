@@ -1,10 +1,14 @@
+"""Run pylint-airflow on all *.py files found in scripts/"""
+
 import os
 import pathlib
 
 import pytest
 
 match_dagid_filename_testfilesdir = os.path.join(pytest.helpers.file_abspath(__file__), "scripts")
-match_dagid_filename_testfiles = list(pathlib.Path(match_dagid_filename_testfilesdir).glob("**/*.py"))
+match_dagid_filename_testfiles = list(
+    pathlib.Path(match_dagid_filename_testfilesdir).glob("**/*.py")
+)
 
 
 @pytest.mark.parametrize(
@@ -16,4 +20,5 @@ match_dagid_filename_testfiles = list(pathlib.Path(match_dagid_filename_testfile
     ],
 )
 def test_match_dagid_filename(test_filepath):
+    """Run pylint-airflow on file, given filepath."""
     pytest.helpers.functional_test(test_filepath)

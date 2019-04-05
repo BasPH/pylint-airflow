@@ -63,11 +63,12 @@ class TestOperatorChecker(CheckerTestCase):
             ),
             (
                 "import airflow.operators.python_operator",
-                'mytask = airflow.operators.python_operator.PythonOperator(task_id="mytask", python_callable=foo) #@',
+                'mytask = airflow.operators.python_operator.PythonOperator(task_id="mytask", python_callable=foo) #@',  # pylint: disable=line-too-long
             ),
         ],
     )
     def test_match_callable_taskid(self, imports, operator_def):
+        """tests matching match_callable_taskid"""
         testcase = f"{imports}\ndef foo(): print('dosomething')\n{operator_def}"
         expected_message = "match-callable-taskid"
 

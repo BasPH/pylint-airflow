@@ -1,3 +1,5 @@
+"""Globally accessible helpers functions/classes in all tests."""
+
 import io
 import os
 
@@ -43,6 +45,7 @@ class PylintAirflowLintModuleTest(LintModuleTest):
             return get_expected_messages(fobj)
 
     def check_file(self):
+        """Run Pylint on a file."""
         self._linter.check(self._test_filepath)
 
         expected_msgs = self._get_expected()
@@ -69,10 +72,12 @@ class PylintAirflowLintModuleTest(LintModuleTest):
 
 @pytest.helpers.register
 def functional_test(filepath):
+    """Run Pylint on a file, given the path to the file."""
     lint_test = PylintAirflowLintModuleTest(filepath)
     lint_test.check_file()
 
 
 @pytest.helpers.register
 def file_abspath(file):
+    """Fetch the absolute path to the directory of a file."""
     return os.path.abspath(os.path.dirname(file))
