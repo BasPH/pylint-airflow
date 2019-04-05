@@ -78,7 +78,8 @@ class OperatorChecker(checkers.BaseChecker):
                 python_callable_name = None
 
                 for keyword in node.value.keywords:
-                    if keyword.arg == "task_id":
+                    if keyword.arg == "task_id" and isinstance(keyword.value, astroid.Const):
+                        # TODO support other values than constants
                         task_id = keyword.value.value
                         continue
                     elif keyword.arg == "python_callable":
