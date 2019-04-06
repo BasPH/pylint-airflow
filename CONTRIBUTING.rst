@@ -57,12 +57,37 @@ Some pointers if you're new to Pylint plugin development:
     import astroid
     print(astroid.parse('''your script here''').repr_tree())
 
+    # For example:
+    print(astroid.parse('''test = "foobar"''').repr_tree())
 
-- Define ``visit_[token]`` or ``leave_[token]`` methods to process respective tokens.
+    Module(
+       name='',
+       doc=None,
+       file='<?>',
+       path=['<?>'],
+       package=False,
+       pure_python=True,
+       future_imports=set(),
+       body=[Assign(
+             targets=[AssignName(name='test')],
+             value=Const(value='foobar'))])
+
+- Or in a debugging session on any given AST node:
+
+.. code-block:: python
+
+    print(node.repr_tree())
+
+    # For example:
+    node = astroid.parse('''test = "foobar"''')
+    print(node.repr_tree())
+
+- Define ``visit_[token]`` or ``leave_[token]`` methods to process respective tokens, e.g. ``visit_module()``.
 - All available token types: http://pylint.pycqa.org/projects/astroid/en/latest/api/astroid.nodes.html.
 - Pylint searches for the variable ``msgs`` in a checker, make sure it is named exactly that.
-- Pylint lends itself nicely for test driven development: add one or more test cases (preferably both valid and invalid cases), and then implement a checker to run the test cases successfully. 
+- Pylint lends itself nicely for test driven development: add one or more test cases (preferably both valid and invalid cases), and then implement a checker to run the test cases successfully.
 - Some useful resources to learn about Pylint:
-    - `How to write Pylint plugins by Alexander Todorov - PiterPy 2018 <https://piterpy.com/system/attachments/files/000/001/519/original/how_to_write_pylint_plugins_PiterPy_2018.pdf>`_
-    - `Pylint source code <https://github.com/PyCQA/pylint>`_
-    - `Pylint Django plugin source code <https://github.com/PyCQA/pylint-django)>`_
+
+  - `How to write Pylint plugins by Alexander Todorov - PiterPy 2018 <https://piterpy.com/system/attachments/files/000/001/519/original/how_to_write_pylint_plugins_PiterPy_2018.pdf>`_
+  - `Pylint source code <https://github.com/PyCQA/pylint>`_
+  - `Pylint Django plugin source code <https://github.com/PyCQA/pylint-django)>`_
