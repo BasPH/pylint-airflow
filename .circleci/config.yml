@@ -1,5 +1,6 @@
 version: 2
 
+# These steps are executed for all Python versions
 _steps: &steps
   steps:
     - checkout
@@ -34,7 +35,7 @@ jobs:
 
 workflows:
   version: 2
-  test_versions:
+  validate:
     jobs:
       - python36
       - python37
