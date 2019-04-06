@@ -93,7 +93,7 @@ The current codes are:
 Documentation
 *************
 
-Documentation is available on Read the Docs. TODO: make docs, upload, and make link here.
+Documentation is available on `Read the Docs <https://pylint-airflow.readthedocs.io>`_.
 
 ************
 Contributing
