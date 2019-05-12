@@ -72,7 +72,10 @@ class OperatorChecker(checkers.BaseChecker):
                 function_node is not None
                 and not isinstance(function_node, astroid.bases.BoundMethod)
                 and hasattr(function_node, "is_subtype_of")
-                and function_node.is_subtype_of("airflow.models.BaseOperator")
+                and (
+                    function_node.is_subtype_of("airflow.models.BaseOperator")
+                    or function_node.is_subtype_of("airflow.models.baseoperator.BaseOperator")
+                )
             ):
                 var_name = node.targets[0].name
                 task_id = None
