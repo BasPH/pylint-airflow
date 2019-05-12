@@ -31,3 +31,10 @@ ci-docker: build_ci_image
 build_ci_image:
 	docker build --file docker/ci.Dockerfile --build-arg PYTHON_VERSION=3.6-slim --tag basph/pylint-airflow-ci:3.6-slim .
 	docker build --file docker/ci.Dockerfile --build-arg PYTHON_VERSION=3.7-slim --tag basph/pylint-airflow-ci:3.7-slim .
+
+.PHONY: upload-to-pypi
+upload-to-pypi:
+	rm -rf dist/
+	python setup.py sdist bdist_wheel
+	twine check dist/*
+	twine upload dist/*

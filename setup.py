@@ -15,7 +15,7 @@ setup(
     description="A Pylint plugin to lint Apache Airflow code.",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    version="0.1.0-alpha",
+    version="0.1.0-alpha.1",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=requirements,
