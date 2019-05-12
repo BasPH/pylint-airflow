@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 requirements = ["pylint"]
 
-readme = Path(__file__).resolve().parent / "README_noraw.rst"
+readme = Path(__file__).resolve().parent / "README.rst"
 with open(readme) as f:
     long_description = f.read()
 
