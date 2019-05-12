@@ -1,13 +1,20 @@
 """Setup of pylint-airflow package"""
+from pathlib import Path
 
 from setuptools import setup, find_packages
 
 requirements = ["pylint"]
 
+readme = Path(__file__).resolve().parent / "README_noraw.rst"
+with open(readme) as f:
+    long_description = f.read()
+
 setup(
     name="pylint-airflow",
     url="https://github.com/BasPH/pylint-airflow",
     description="A Pylint plugin to lint Apache Airflow code.",
+    long_description=long_description,
+    long_description_content_type="text/x-rst",
     version="0.1.0-alpha",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
