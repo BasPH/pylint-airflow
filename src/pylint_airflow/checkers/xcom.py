@@ -31,7 +31,7 @@ class XComChecker(checkers.BaseChecker):
 
         Currently this only checks unused XComs from return value of a python_callable.
         """
-        # pylint: disable=too-many-locals,too-many-branches
+        # pylint: disable=too-many-locals,too-many-branches,too-many-nested-blocks
         assign_nodes = [n for n in node.body if isinstance(n, astroid.Assign)]
         call_nodes = [n.value for n in assign_nodes if isinstance(n.value, astroid.Call)]
 
@@ -56,23 +56,29 @@ class XComChecker(checkers.BaseChecker):
         xcoms_pushed = dict()
         xcoms_pulled_taskids = set()
         for (task_id, (python_callable, callable_func_name)) in python_callable_nodes.items():
-            callable_func: astroid.FunctionDef = node.getattr(callable_func_name)[0]
+            if callable_func_name != "<lambda>":
+                # TODO support lambdas
+                callable_func = node.getattr(callable_func_name)[0]
 
-            # Check if the function returns any values
-            returns_value = any([isinstance(n, astroid.Return) for n in callable_func.body])
-            if returns_value:
-                xcoms_pushed[task_id] = (python_callable, callable_func_name)
+                if isinstance(callable_func, astroid.FunctionDef):
+                    # Callable_func is str not FunctionDef when imported
+                    callable_func = node.getattr(callable_func_name)[0]
 
-            # Check if the function pulls any XComs
-            callable_func_calls = callable_func.nodes_of_class(astroid.Call)
-            for callable_func_call in callable_func_calls:
-                if (
-                    isinstance(callable_func_call.func, astroid.Attribute)
-                    and callable_func_call.func.attrname == "xcom_pull"
-                ):
-                    for keyword in callable_func_call.keywords:
-                        if keyword.arg == "task_ids":
-                            xcoms_pulled_taskids.add(keyword.value.value)
+                    # Check if the function returns any values
+                    if any([isinstance(n, astroid.Return) for n in callable_func.body]):
+                        # Found a return statement
+                        xcoms_pushed[task_id] = (python_callable, callable_func_name)
+
+                    # Check if the function pulls any XComs
+                    callable_func_calls = callable_func.nodes_of_class(astroid.Call)
+                    for callable_func_call in callable_func_calls:
+                        if (
+                            isinstance(callable_func_call.func, astroid.Attribute)
+                            and callable_func_call.func.attrname == "xcom_pull"
+                        ):
+                            for keyword in callable_func_call.keywords:
+                                if keyword.arg == "task_ids":
+                                    xcoms_pulled_taskids.add(keyword.value.value)
 
         remainder = xcoms_pushed.keys() - xcoms_pulled_taskids
         if remainder:
@@ -81,4 +87,4 @@ class XComChecker(checkers.BaseChecker):
                 python_callable, callable_func_name = xcoms_pushed[remainder_task_id]
                 self.add_message("unused-xcom", node=python_callable, args=callable_func_name)
 
-        # pylint: enable=too-many-locals,too-many-branches
+        # pylint: enable=too-many-locals,too-many-branches,too-many-nested-blocks
