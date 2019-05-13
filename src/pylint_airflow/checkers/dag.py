@@ -89,7 +89,9 @@ class DagChecker(checkers.BaseChecker):
                                 return str(keyword.value.value), call_node
 
                     if call_node.args:
-                        # TODO support dag_ids set in other ways than constant.
+                        if not hasattr(call_node.args[0], "value"):
+                            # TODO Support dynamic dag_id. If dag_id is set from variable, it has no value attr.  # pylint: disable=line-too-long
+                            return None, None
                         return call_node.args[0].value, call_node
 
             return None, None
